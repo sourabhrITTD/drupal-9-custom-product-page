@@ -1,0 +1,72 @@
+<?php
+/**
+ * @file
+ * Contains product.module.
+ */
+
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Database\Database;
+
+
+/* function product_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $suggestions[] = 'page__' . $node->bundle();
+}
+} */
+
+
+/**
+ * @param $variables
+ */
+function product_preprocess_node(&$variables) {
+		include 'phpqrcode/qrlib.php';
+		$root=DRUPAL_ROOT;
+		$path = $root.'/sites/default/files/images/';
+		if (!file_exists($path)) {
+		mkdir($path, 0777, true);
+		}
+
+		$qrfile = uniqid().".png";
+		$file = $path.$qrfile;
+		// $ecc stores error correction capability('L')
+		$ecc = 'L';
+		$pixel_Size = 20;
+		$frame_Size = 20;
+		$text = "GEEKS FOR GEEKS";  
+		// Generates QR Code and Stores it in directory given
+		QRcode::png($text, $file, $ecc, $pixel_Size, $frame_size);
+
+		$variables['qrimagefile'] = $qrfile ;
+
+}
+
+/**
+ * Implements hook_theme().
+ */
+function product_theme() {
+  return [
+    'node__product' => [
+      'template' => 'node--product',
+      'base hook' => 'node'
+    ],
+  ];
+}
+
+function product_uninstall() {
+  $database = \Drupal::service('database');
+$query = $database->query("DELETE FROM `config` WHERE `config`.`collection` = '' AND `config`.`name` = 'core.entity_form_display.node.product.default'"); 	
+$query = $database->query("DELETE FROM `config` WHERE `config`.`collection` = '' AND `config`.`name` = 'core.entity_view_display.node.product.default'"); 	
+$query = $database->query("DELETE FROM `config` WHERE `config`.`collection` = '' AND `config`.`name` = 'core.entity_view_display.node.product.teaser'"); 
+$query = $database->query("DELETE FROM `config` WHERE `config`.`collection` = '' AND `config`.`name` = 'field.field.node.product.field_pro'"); 		
+$query = $database->query("DELETE FROM `config` WHERE `config`.`collection` = '' AND `config`.`name` = 'field.field.node.product.field_product_description'"); 	
+$query = $database->query("DELETE FROM `config` WHERE `config`.`collection` = '' AND `config`.`name` = 'field.storage.node.field_product_description'");
+$query = $database->query("DELETE FROM `config` WHERE `config`.`collection` = '' AND `config`.`name` = 'node.type.product'");
+$query = $database->query("DELETE FROM `config` WHERE `config`.`collection` = '' AND `config`.`name` = 'field.storage.node.field_pro'"); 	
+  // Clear book data out of the cache.
+  \Drupal::cache('data')->deleteAll();
+}
+
+
+
+

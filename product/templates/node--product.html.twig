@@ -1,0 +1,27 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap-grid.min.css" integrity="sha512-JQksK36WdRekVrvdxNyV3B0Q1huqbTkIQNbz1dlcFVgNynEMRl0F8OSqOGdVppLUDIvsOejhr/W5L3G/b3J+8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+#sidebar-first{display:none;}
+.layout-sidebar-first .main-content{margin-left:0%;}
+#content{width:100%;}
+.field--name-field-product-description .field__label{display:none;}
+</style>
+
+  
+  
+<div class="row">
+  <div class="col-8">
+  <!--<h3>{{ node.title.value }}</h3>-->
+  <div class="row">
+  <div class="col-4">
+  <img src="{{file_url(node.field_pro.entity.fileuri)}}" />
+  </div>
+   <div class="col-8">
+   {{ content.field_product_description }}
+  </div>
+  </div>
+  </div>
+  <div class="col-4" style="border-left:1px solid #ddd;">
+	<img src="sites/default/files/images/{{ qrimagefile }}">
+  </div>
+</div>  
